@@ -7,12 +7,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
 
-    @GetMapping("/landing")
+    @GetMapping("/")
 
     @ResponseBody
-    public String landingPage() {
-        return "This is the landing page!";
+    public String home() {
+        return "WELCOME TO THE LANDING PAGE!";
     }
+
+    @GetMapping("/index")
+
+    public String welcome() {
+        return "home";
+    } //Returning name of html file, DO NOT USE RESPONSE BODY TO GRAB IT, that is for strings only.
 
 
 
