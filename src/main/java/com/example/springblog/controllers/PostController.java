@@ -10,24 +10,40 @@ import java.util.ArrayList;
 @Controller
 public class PostController {
 
+    private final PostRepository postDao; //injection
 
-    @RequestMapping(path = "/posts/index", method = RequestMethod.GET)
-    public String postsIndex(Model model){
-        ArrayList<Post> posts = new ArrayList<>();
-        Post post1 = new Post("title-1", "body-1");
-        Post post2 = new Post("title-2", "body-2");
-        posts.add(post1);
-        posts.add(post2);
-        model.addAttribute("posts", posts);
+    public PostController(PostRepository postDao) {
+        this.postDao = postDao;
+    }
+
+    @GetMapping("/posts/index") //Populates Page
+    public String postsIndex(Model model) {
+        model.addAttribute("posts", postDao.findAll());
         return "/posts/index";
     }
 
 
-    @GetMapping("/posts/show")
-    public String showPost(Model model){
-        Post onePost1 = new Post("A Post", "This is a post");
-        model.addAttribute("onepost", onePost1);
+    @GetMapping("/posts/{postId}") //Redirect to show when view post button is clicked
+    public String viewPost(Model model, @PathVariable Long postId) {
+        Post showPost = postDao.getById(postId);
+        model.addAttribute("post", showPost);
         return "/posts/show";
+    }
+
+    @GetMapping("/edit/{postId}") //Shows which post you're editing
+    public String editPostForm(Model model, @PathVariable Long postId) {
+        Post post = postDao.getById(postId);
+        model.addAttribute("posts", post); //this pre-populates the info in the form in the edit.html
+
+        return "/posts/edit";
+    }
+
+    @PostMapping("/edit/{postId}") //Saves new information and redirects you back to index when done
+    public String editPost(@PathVariable("postId") Long postId, @ModelAttribute Post post) {
+
+        postDao.save(post);
+
+        return "redirect:/posts/index";
     }
 
 
@@ -44,6 +60,11 @@ public class PostController {
     @ResponseBody
     public String createPost() {
         return "Create a new post here!";
+    }
+
+    @PostMapping("/posts/index") //Deletes Post
+    public void deletePost(Long postId) {
+        postDao.deleteById(postId);
     }
 
 }

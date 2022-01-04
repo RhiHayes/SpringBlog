@@ -8,8 +8,13 @@
 
 <h1>Show</h1>
 
-<h2 th:text="${onepost.title}"></h2>
-<p th:text="${onepost.body}"></p>
+<h2 th:text="${post.title}"></h2>
+<p th:text="${post.body}"></p>
+
+<form method="GET" th:action="@{'/edit/' + ${postId}}">
+    <input type="hidden" name="postId" id="postId" th:field="*{post.id}" />
+    <button type="submit" name="submit" value="editPost">Edit</button>
+</form>
 
 </body>
 </html>
