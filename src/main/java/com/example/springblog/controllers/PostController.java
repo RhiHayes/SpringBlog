@@ -11,9 +11,11 @@ import java.util.ArrayList;
 public class PostController {
 
     private final PostRepository postDao; //injection
+    private final UserRepository userDao; //injection
 
-    public PostController(PostRepository postDao) {
+    public PostController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
 
     @GetMapping("/posts/index") //Populates Page
@@ -27,6 +29,7 @@ public class PostController {
     public String viewPost(Model model, @PathVariable Long postId) {
         Post showPost = postDao.getById(postId);
         model.addAttribute("post", showPost);
+        model.addAttribute("user", showPost.getUser());
         return "/posts/show";
     }
 

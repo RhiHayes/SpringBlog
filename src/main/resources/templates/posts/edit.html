@@ -10,6 +10,7 @@
   <h1>Edit You Post</h1>
   <form th:method="POST" th:object="${posts}" th:value="${postId}" th:action="@{'/edit/' + ${postId}}">
     <input type="hidden" th:field="*{id}" name="postId"/> <!-- Sticky Form -->
+    <input type="hidden" th:field="*{user}" name="userId"/> <!-- Sticky Form; post deletes user id after one edit if this isn't there -->
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title" th:field="*{title}" th:value="title" />
     <br />

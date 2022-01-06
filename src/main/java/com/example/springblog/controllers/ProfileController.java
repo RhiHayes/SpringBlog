@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class ProfileController {
 
-
-
     @GetMapping("/profile/{username}")
     public String username (@PathVariable String username, Model model) {
         model.addAttribute("username", username);
