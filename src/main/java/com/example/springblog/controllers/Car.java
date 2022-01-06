@@ -16,6 +16,9 @@ public class Car {
     @Column(nullable= false, length = 50)
     private String model;
 
+    @ManyToOne
+    private Owner carOwner;
+
 
     public void setId(long id) {
         this.id = id;
