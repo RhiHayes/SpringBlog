@@ -51,18 +51,20 @@ public class PostController {
 
 
     @GetMapping("/posts/create")
-
-    @ResponseBody
-    public String create() {
-        return "This is the form for creating the post!";
+    public String viewCreatePost(Model model){
+        model.addAttribute("posts", new Post());
+        return "/posts/create";
     }
 
 
-    @RequestMapping(path = "posts/create", method = RequestMethod.POST)
+    @PostMapping("/posts/create")
+    public String addNewPost(@ModelAttribute Post post) {
 
-    @ResponseBody
-    public String createPost() {
-        return "Create a new post here!";
+        User user = userDao.getById(1L);
+
+        post.setUser(user);
+        postDao.save(post);
+        return "redirect:/posts/index";
     }
 
     @PostMapping("/posts/index") //Deletes Post
