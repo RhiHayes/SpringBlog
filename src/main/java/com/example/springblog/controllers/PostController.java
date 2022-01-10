@@ -12,10 +12,13 @@ public class PostController {
 
     private final PostRepository postDao; //injection
     private final UserRepository userDao; //injection
+    private final EmailService emailService;
 
-    public PostController(PostRepository postDao, UserRepository userDao) {
+    public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
         this.postDao = postDao;
         this.userDao = userDao;
+        this.emailService = emailService;
+
     }
 
     @GetMapping("/posts/index") //Populates Page
@@ -60,10 +63,15 @@ public class PostController {
     @PostMapping("/posts/create")
     public String addNewPost(@ModelAttribute Post post) {
 
-        User user = userDao.getById(1L);
+        User user = userDao.getById(1L); //Manually Setting User
 
         post.setUser(user);
+
         postDao.save(post);
+
+        String emailBody = "Your post was posted: " + post.getBody();
+
+        emailService.prepareAndSend(post, post.getTitle(), emailBody);
         return "redirect:/posts/index";
     }
 
