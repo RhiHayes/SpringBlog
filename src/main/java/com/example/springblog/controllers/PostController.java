@@ -1,6 +1,7 @@
 package com.example.springblog.controllers;
 
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +64,7 @@ public class PostController {
     @PostMapping("/posts/create")
     public String addNewPost(@ModelAttribute Post post) {
 
-        User user = userDao.getById(1L); //Manually Setting User
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         post.setUser(user);
 
